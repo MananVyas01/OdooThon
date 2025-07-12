@@ -8,9 +8,7 @@
     "dev": "nodemon server.js",
     "seed": "node seeds/seed.js",
     "seed:reset": "node reset.js",
-    "seed:test": "MONGO_URI_TEST=mongodb://localhost:27017/rewear-test node seeds/seed.js",
-    "test": "echo \"No tests specified\" && exit 0",
-    "lint": "echo \"✅ Linting passed - No linting configured yet\" && exit 0"
+    "test": "echo \"No tests specified\" && exit 0"
   },
   "keywords": [
     "mern",

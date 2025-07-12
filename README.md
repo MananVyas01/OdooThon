@@ -380,9 +380,9 @@ REACT_APP_CLOUDINARY_CLOUD_NAME=your-cloudinary-name
 
 After seeding the database, you can use these demo accounts:
 
-- **Admin**: admin@rewear.com / password123
-- **Community Manager**: manager@rewear.com / password123
-- **User**: user@rewear.com / password123
+- **Admin**: admin@rewear.com / admin123
+- **Community Manager**: manan@rewear.com / manan123
+- **User**: shrey@rewear.com / shrey123
 
 ## 📁 Project Structure
 
