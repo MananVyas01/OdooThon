@@ -150,7 +150,7 @@ const Login = () => {
             </p>
             <div className="mt-2 text-xs text-gray-500 space-y-1">
               <p>Admin: admin@rewear.com / admin123</p>
-              <p>User: user@example.com / password123</p>
+              <p>User: shrey@rewear.com / shrey123</p>
             </div>
           </div>
         </form>
