@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api';
 
 // Create axios instance
 const api = axios.create({
@@ -79,6 +79,29 @@ export const requestAPI = {
   deleteRequest: (id) => api.delete(`/requests/${id}`),
   addComment: (id, comment) => api.post(`/requests/${id}/comments`, comment),
   getDashboardStats: () => api.get('/requests/dashboard/stats'),
+};
+
+// Admin API (for admin moderation and management)
+export const adminAPI = {
+  // Dashboard stats
+  getAdminStats: () => api.get('/admin/stats'),
+
+  // Item management
+  getPendingItems: (params) => api.get('/admin/items/pending', { params }),
+  getAllItems: (params) => api.get('/admin/items', { params }),
+  approveItem: (id, data) => api.patch(`/admin/items/${id}/approve`, data),
+  rejectItem: (id, data) => api.patch(`/admin/items/${id}/reject`, data),
+  bulkApproveItems: (data) => api.patch('/admin/items/bulk-approve', data),
+  bulkRejectItems: (data) => api.patch('/admin/items/bulk-reject', data),
+
+  // User management
+  getAllUsers: (params) => api.get('/admin/users', { params }),
+  getUserById: (id) => api.get(`/admin/users/${id}`),
+  updateUserRole: (id, data) => api.patch(`/admin/users/${id}/role`, data),
+  suspendUser: (id, data) => api.patch(`/admin/users/${id}/suspend`, data),
+  deleteUser: (id, data) => api.delete(`/admin/users/${id}`, { data }),
+  getUserStats: () => api.get('/admin/users/stats'),
+  resetUserPassword: (id, data) => api.patch(`/admin/users/${id}/reset-password`, data),
 };
 
 export default api;

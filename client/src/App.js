@@ -2,7 +2,9 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ToastProvider } from './components/Toast';
+import { ToastContainer } from 'react-toastify';
 import ProtectedRoute from './components/ProtectedRoute';
+import AdminProtectedRoute from './components/AdminProtectedRoute';
 import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -12,7 +14,13 @@ import ItemForm from './pages/ItemForm';
 import ItemDetails from './pages/ItemDetails';
 import MySwaps from './pages/MySwaps';
 import CategoryView from './pages/CategoryView';
+import AdminLayout from './components/admin/AdminLayout';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import PendingItems from './pages/admin/PendingItems';
+import ManageItems from './pages/admin/ManageItems';
+import ManageUsers from './pages/admin/ManageUsers';
 import './index.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -20,10 +28,62 @@ function App() {
       <AuthProvider>
         <Router>
           <div className="App">
+            <ToastContainer
+              position="top-right"
+              autoClose={3000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+            />
             <Routes>
               {/* Public Routes */}
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              
+              {/* Admin Routes */}
+              <Route path="/admin" element={
+                <AdminProtectedRoute>
+                  <AdminLayout>
+                    <AdminDashboard />
+                  </AdminLayout>
+                </AdminProtectedRoute>
+              } />
+              
+              <Route path="/admin/dashboard" element={
+                <AdminProtectedRoute>
+                  <AdminLayout>
+                    <AdminDashboard />
+                  </AdminLayout>
+                </AdminProtectedRoute>
+              } />
+              
+              <Route path="/admin/pending-items" element={
+                <AdminProtectedRoute>
+                  <AdminLayout>
+                    <PendingItems />
+                  </AdminLayout>
+                </AdminProtectedRoute>
+              } />
+              
+              <Route path="/admin/items" element={
+                <AdminProtectedRoute>
+                  <AdminLayout>
+                    <ManageItems />
+                  </AdminLayout>
+                </AdminProtectedRoute>
+              } />
+              
+              <Route path="/admin/users" element={
+                <AdminProtectedRoute>
+                  <AdminLayout>
+                    <ManageUsers />
+                  </AdminLayout>
+                </AdminProtectedRoute>
+              } />
               
               {/* Protected Routes */}
               <Route path="/" element={

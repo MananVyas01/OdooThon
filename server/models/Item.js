@@ -67,6 +67,28 @@ const itemSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  approvedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  approvedAt: {
+    type: Date
+  },
+  rejectedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  rejectedAt: {
+    type: Date
+  },
+  rejectionReason: {
+    type: String,
+    maxlength: [500, 'Rejection reason cannot be more than 500 characters']
+  },
+  moderationNotes: {
+    type: String,
+    maxlength: [1000, 'Moderation notes cannot be more than 1000 characters']
+  },
   points: {
     type: Number,
     default: 0,

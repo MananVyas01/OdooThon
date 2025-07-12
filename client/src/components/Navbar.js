@@ -21,6 +21,7 @@ const Navbar = () => {
     { path: '/categories', label: 'Categories', icon: '📂' },
     { path: '/items/new', label: 'List Item', icon: '➕' },
     { path: '/swaps', label: 'My Swaps', icon: '🔄' },
+    ...(user?.role === 'admin' ? [{ path: '/admin', label: 'Admin Panel', icon: '⚙️' }] : []),
   ];
 
   return (
