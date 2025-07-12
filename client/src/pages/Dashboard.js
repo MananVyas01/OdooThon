@@ -20,18 +20,35 @@ const Dashboard = () => {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      const [statsResponse, itemsResponse, swapStatsResponse] = await Promise.all([
-        itemAPI.getDashboardStats(),
-        itemAPI.getMyItems({ limit: 5, sort: 'createdAt', order: 'desc' }),
-        swapAPI.getSwapStats()
-      ]);
+      
+      // Fetch data with error handling for each endpoint
+      const promises = [
+        itemAPI.getDashboardStats().catch(err => {
+          console.warn('Dashboard stats failed:', err);
+          return { data: { data: { totalItems: 0, availableItems: 0, swappedItems: 0, hiddenItems: 0, totalLikes: 0, categoryStats: [] } } };
+        }),
+        itemAPI.getMyItems({ limit: 5, sort: 'createdAt', order: 'desc' }).catch(err => {
+          console.warn('My items failed:', err);
+          return { data: { data: [] } };
+        }),
+        swapAPI.getSwapStats().catch(err => {
+          console.warn('Swap stats failed:', err);
+          return { data: { data: { availablePoints: 0, activeSwaps: 0, completedSwaps: 0, pendingRequests: 0 } } };
+        })
+      ];
+
+      const [statsResponse, itemsResponse, swapStatsResponse] = await Promise.all(promises);
 
       setStats(statsResponse.data);
-      setRecentItems(itemsResponse.data.data);
+      setRecentItems(itemsResponse.data.data || []);
       setSwapStats(swapStatsResponse.data);
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
       toast.error('Failed to load dashboard data');
+      // Set default empty data
+      setStats({ data: { totalItems: 0, availableItems: 0, swappedItems: 0, hiddenItems: 0, totalLikes: 0, categoryStats: [] } });
+      setRecentItems([]);
+      setSwapStats({ data: { availablePoints: 0, activeSwaps: 0, completedSwaps: 0, pendingRequests: 0 } });
     } finally {
       setLoading(false);
     }
@@ -83,6 +100,37 @@ const Dashboard = () => {
           <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
           <p className="text-gray-600 mt-2">Overview of your garment listings and swap activity</p>
         </div>
+
+        {/* Welcome Message for New Users */}
+        {(!stats?.data?.totalItems || stats?.data?.totalItems === 0) && (
+          <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg shadow-lg p-8 mb-8 text-white">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                  <span className="text-3xl">👋</span>
+                </div>
+              </div>
+              <div className="ml-6">
+                <h2 className="text-2xl font-bold mb-2">Welcome to StyleSwap!</h2>
+                <p className="text-blue-100 mb-4">
+                  Start your sustainable fashion journey by listing your first item or browsing what others have to offer.
+                </p>
+                <div className="flex space-x-4">
+                  <Link to="/items/new">
+                    <Button className="bg-white text-blue-600 hover:bg-blue-50">
+                      📝 List Your First Item
+                    </Button>
+                  </Link>
+                  <Link to="/items">
+                    <Button variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600">
+                      🔍 Browse Items
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">

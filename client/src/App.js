@@ -11,6 +11,7 @@ import ItemList from './pages/ItemList';
 import ItemForm from './pages/ItemForm';
 import ItemDetails from './pages/ItemDetails';
 import MySwaps from './pages/MySwaps';
+import CategoryView from './pages/CategoryView';
 import './index.css';
 
 function App() {
@@ -81,6 +82,15 @@ function App() {
                   <div>
                     <Navbar />
                     <MySwaps />
+                  </div>
+                </ProtectedRoute>
+              } />
+              
+              <Route path="/categories" element={
+                <ProtectedRoute>
+                  <div>
+                    <Navbar />
+                    <CategoryView />
                   </div>
                 </ProtectedRoute>
               } />

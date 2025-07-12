@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { itemAPI } from '../utils/api';
 import { useToast } from '../components/Toast';
 import Loading from '../components/Loading';
@@ -17,14 +17,28 @@ const ItemList = () => {
     size: '',
     condition: '',
     search: '',
+    sort: 'createdAt',
+    order: 'desc',
     page: 1,
     limit: 12
   });
   const [deleteModal, setDeleteModal] = useState({ isOpen: false, item: null });
   const [deleting, setDeleting] = useState(false);
+  const [searchParams] = useSearchParams();
 
   const toast = useToast();
   const navigate = useNavigate();
+
+  // Initialize filters from URL parameters
+  useEffect(() => {
+    const categoryParam = searchParams.get('category');
+    if (categoryParam) {
+      setFilters(prev => ({
+        ...prev,
+        category: categoryParam
+      }));
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     fetchItems();
@@ -119,6 +133,20 @@ const ItemList = () => {
     { value: 'poor', label: 'Poor' }
   ];
 
+  const sortOptions = [
+    { value: 'createdAt', label: 'Newest First' },
+    { value: 'title', label: 'Title (A-Z)' },
+    { value: 'category', label: 'Category (A-Z)' },
+    { value: 'condition', label: 'Condition' },
+    { value: 'likeCount', label: 'Most Liked' },
+    { value: 'viewCount', label: 'Most Viewed' }
+  ];
+
+  const orderOptions = [
+    { value: 'desc', label: 'Descending' },
+    { value: 'asc', label: 'Ascending' }
+  ];
+
   const getConditionColor = (condition) => {
     switch (condition) {
       case 'new': return 'bg-green-100 text-green-800';
@@ -206,6 +234,39 @@ const ItemList = () => {
                 options={conditionOptions}
               />
             </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Sort By</label>
+              <Select
+                value={filters.sort}
+                onChange={(value) => handleFilterChange('sort', value)}
+                options={sortOptions}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Order</label>
+              <Select
+                value={filters.order}
+                onChange={(value) => handleFilterChange('order', value)}
+                options={orderOptions}
+              />
+            </div>
+          </div>
+          <div className="mt-4 flex justify-end">
+            <Button
+              variant="outline"
+              onClick={() => setFilters({
+                category: '',
+                size: '',
+                condition: '',
+                search: '',
+                sort: 'createdAt',
+                order: 'desc',
+                page: 1,
+                limit: 12
+              })}
+            >
+              Clear Filters
+            </Button>
           </div>
         </div>
 

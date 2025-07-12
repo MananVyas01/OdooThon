@@ -13,6 +13,7 @@ const getItems = async (req, res) => {
       condition,
       tags,
       location,
+      search,
       sort = 'createdAt',
       order = 'desc',
       page = 1,
@@ -38,6 +39,17 @@ const getItems = async (req, res) => {
       ];
     }
     
+    // Add search functionality
+    if (search) {
+      query.$or = [
+        { title: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } },
+        { tags: { $regex: search, $options: 'i' } },
+        { category: { $regex: search, $options: 'i' } },
+        { brand: { $regex: search, $options: 'i' } }
+      ];
+    }
+
     // Calculate pagination
     const skip = (parseInt(page) - 1) * parseInt(limit);
     const sortOrder = order === 'desc' ? -1 : 1;
