@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { itemAPI } from '../utils/api';
 import { useToast } from '../components/Toast';
 import Loading from '../components/Loading';
@@ -7,6 +7,8 @@ import Button from '../components/Button';
 import Select from '../components/Select';
 import Input from '../components/Input';
 import Modal from '../components/Modal';
+import Fuse from 'fuse.js';
+import { Search, X } from 'lucide-react';
 
 const ItemList = () => {
   const [items, setItems] = useState([]);
@@ -27,7 +29,58 @@ const ItemList = () => {
   const [searchParams] = useSearchParams();
 
   const toast = useToast();
-  const navigate = useNavigate();
+
+  // Fuse.js configuration for fuzzy search
+  const fuseOptions = {
+    keys: [
+      { name: 'title', weight: 0.4 },
+      { name: 'description', weight: 0.3 },
+      { name: 'tags', weight: 0.2 },
+      { name: 'brand', weight: 0.1 }
+    ],
+    threshold: 0.3,
+    includeScore: true,
+    minMatchCharLength: 2
+  };
+
+  // Use Fuse.js for fuzzy search
+  const fuse = useMemo(() => new Fuse(items, fuseOptions), [items]);
+
+  // Filter items based on search and other filters
+  const filteredItems = useMemo(() => {
+    let result = items;
+
+    // Apply fuzzy search if search term exists
+    if (filters.search.trim()) {
+      const searchResults = fuse.search(filters.search);
+      result = searchResults.map(result => result.item);
+    }
+
+    // Apply other filters
+    if (filters.category) {
+      result = result.filter(item => item.category === filters.category);
+    }
+    if (filters.size) {
+      result = result.filter(item => item.size === filters.size);
+    }
+    if (filters.condition) {
+      result = result.filter(item => item.condition === filters.condition);
+    }
+
+    // Apply sorting
+    result.sort((a, b) => {
+      const aValue = a[filters.sort];
+      const bValue = b[filters.sort];
+      
+      if (filters.order === 'asc') {
+        return aValue > bValue ? 1 : -1;
+      } else {
+        return aValue < bValue ? 1 : -1;
+      }
+    });
+
+    return result;
+  }, [items, filters, fuse]);
 
   // Initialize filters from URL parameters
   useEffect(() => {
@@ -68,10 +121,6 @@ const ItemList = () => {
 
   const handlePageChange = (page) => {
     setFilters(prev => ({ ...prev, page }));
-  };
-
-  const handleDeleteClick = (item) => {
-    setDeleteModal({ isOpen: true, item });
   };
 
   const handleDeleteConfirm = async () => {
@@ -129,8 +178,7 @@ const ItemList = () => {
     { value: 'new', label: 'New' },
     { value: 'like-new', label: 'Like New' },
     { value: 'good', label: 'Good' },
-    { value: 'fair', label: 'Fair' },
-    { value: 'poor', label: 'Poor' }
+    { value: 'very-good', label: 'Very Good' }
   ];
 
   const sortOptions = [
@@ -151,9 +199,8 @@ const ItemList = () => {
     switch (condition) {
       case 'new': return 'bg-green-100 text-green-800';
       case 'like-new': return 'bg-emerald-100 text-emerald-800';
+      case 'very-good': return 'bg-blue-100 text-blue-800';
       case 'good': return 'bg-yellow-100 text-yellow-800';
-      case 'fair': return 'bg-orange-100 text-orange-800';
-      case 'poor': return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -203,12 +250,26 @@ const ItemList = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Search</label>
-              <Input
-                type="text"
-                placeholder="Search items..."
-                value={filters.search}
-                onChange={(e) => handleFilterChange('search', e.target.value)}
-              />
+              <div className="flex items-center border rounded-md shadow-sm">
+                <div className="p-2">
+                  <Search className="w-5 h-5 text-gray-400" />
+                </div>
+                <Input
+                  type="text"
+                  placeholder="Search items..."
+                  value={filters.search}
+                  onChange={(e) => handleFilterChange('search', e.target.value)}
+                  className="border-0 focus:ring-0 focus:outline-none"
+                />
+                {filters.search && (
+                  <button
+                    onClick={() => handleFilterChange('search', '')}
+                    className="p-2"
+                  >
+                    <X className="w-5 h-5 text-gray-400" />
+                  </button>
+                )}
+              </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
@@ -271,7 +332,7 @@ const ItemList = () => {
         </div>
 
         {/* Items Grid */}
-        {items.length === 0 ? (
+        {filteredItems.length === 0 ? (
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
             <div className="text-gray-400 text-6xl mb-4">👗</div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">No items found</h3>
@@ -288,7 +349,7 @@ const ItemList = () => {
         ) : (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {items.map((item) => (
+              {filteredItems.map((item) => (
                 <div key={item._id} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
                   {/* Item Image */}
                   <div className="aspect-square bg-gray-100 relative">

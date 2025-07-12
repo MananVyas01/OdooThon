@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useToast } from '../components/Toast';
+import { showToast } from '../utils/toast';
 import Button from '../components/Button';
 import Input from '../components/Input';
 
@@ -13,7 +13,6 @@ const Login = () => {
   const [errors, setErrors] = useState({});
 
   const { login, loading, error, isAuthenticated, clearError } = useAuth();
-  const toast = useToast();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -27,10 +26,10 @@ const Login = () => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      showToast.error(error);
       clearError();
     }
-  }, [error, toast, clearError]);
+  }, [error, clearError]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -70,10 +69,15 @@ const Login = () => {
     
     if (!validateForm()) return;
     
+    console.log('Attempting login with:', formData.email);
     const result = await login(formData);
+    console.log('Login result:', result);
+    
     if (result.success) {
-      toast.success('Login successful!');
+      showToast.success('Login successful!');
       navigate(from, { replace: true });
+    } else {
+      console.error('Login failed:', result.message);
     }
   };
 
@@ -82,9 +86,11 @@ const Login = () => {
       <div className="max-w-md w-full space-y-8">
         <div>
           <div className="flex justify-center">
-            <div className="w-16 h-16 bg-primary-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-2xl">H</span>
-            </div>
+            <img 
+              src="/logo.svg" 
+              alt="ReWear Logo" 
+              className="w-27 h-20 object-contain"
+            />
           </div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Sign in to your account
@@ -143,7 +149,7 @@ const Login = () => {
               Demo credentials:
             </p>
             <div className="mt-2 text-xs text-gray-500 space-y-1">
-              <p>Admin: admin@example.com / password123</p>
+              <p>Admin: admin@rewear.com / admin123</p>
               <p>User: user@example.com / password123</p>
             </div>
           </div>

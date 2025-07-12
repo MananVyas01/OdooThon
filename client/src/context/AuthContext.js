@@ -43,8 +43,13 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
+      console.log('AuthContext: Starting login process');
       dispatch({ type: 'LOGIN_START' });
+      
+      console.log('AuthContext: Making API call to:', authAPI.login);
       const response = await authAPI.login(credentials);
+      console.log('AuthContext: API response received:', response);
+      
       const { token, user } = response.data;
       
       localStorage.setItem('token', token);
@@ -53,6 +58,9 @@ export const AuthProvider = ({ children }) => {
       dispatch({ type: 'LOGIN_SUCCESS', payload: user });
       return { success: true };
     } catch (error) {
+      console.error('AuthContext: Login error:', error);
+      console.error('AuthContext: Error response:', error.response);
+      
       const message = error.response?.data?.message || 'Login failed';
       dispatch({ type: 'LOGIN_FAIL', payload: message });
       return { success: false, message };

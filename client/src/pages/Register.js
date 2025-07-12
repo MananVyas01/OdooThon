@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useToast } from '../components/Toast';
+import { showToast } from '../utils/toast';
 import Button from '../components/Button';
 import Input from '../components/Input';
 import Select from '../components/Select';
@@ -17,7 +17,6 @@ const Register = () => {
   const [errors, setErrors] = useState({});
 
   const { register, loading, error, isAuthenticated, clearError } = useAuth();
-  const toast = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,10 +27,10 @@ const Register = () => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      showToast.error(error);
       clearError();
     }
-  }, [error, toast, clearError]);
+  }, [error, clearError]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -89,7 +88,7 @@ const Register = () => {
     const result = await register(registerData);
     
     if (result.success) {
-      toast.success('Registration successful!');
+      showToast.success('Registration successful!');
       navigate('/dashboard', { replace: true });
     }
   };
@@ -105,9 +104,11 @@ const Register = () => {
       <div className="max-w-md w-full space-y-8">
         <div>
           <div className="flex justify-center">
-            <div className="w-16 h-16 bg-primary-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-2xl">H</span>
-            </div>
+            <img 
+              src="/logo.svg" 
+              alt="ReWear Logo" 
+              className="w-27 h-20 object-contain"
+            />
           </div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Create your account

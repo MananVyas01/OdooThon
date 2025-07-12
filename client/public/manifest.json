@@ -1,0 +1,23 @@
+{
+  "short_name": "ReWear",
+  "name": "ReWear - Sustainable Fashion Exchange",
+  "description": "Transform fashion consumption through sustainable exchange. Swap, trade, and share clothing items in our community-driven ecosystem.",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "logo.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#10b981",
+  "background_color": "#ffffff",
+  "categories": ["lifestyle", "shopping", "sustainability"],
+  "lang": "en-US"
+}

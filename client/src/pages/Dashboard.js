@@ -5,6 +5,7 @@ import { itemAPI, swapAPI } from '../utils/api';
 import { useToast } from '../components/Toast';
 import Loading from '../components/Loading';
 import Button from '../components/Button';
+import EcoImpactWidget from '../components/EcoImpactWidget';
 
 const Dashboard = () => {
   const [stats, setStats] = useState(null);
@@ -111,7 +112,7 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="ml-6">
-                <h2 className="text-2xl font-bold mb-2">Welcome to StyleSwap!</h2>
+                <h2 className="text-2xl font-bold mb-2">Welcome to ReWear!</h2>
                 <p className="text-blue-100 mb-4">
                   Start your sustainable fashion journey by listing your first item or browsing what others have to offer.
                 </p>
@@ -248,6 +249,14 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Eco Impact Widget */}
+        <div className="mb-8">
+          <EcoImpactWidget 
+            completedSwaps={swapStats?.data?.completedSwaps || 0}
+            userPoints={swapStats?.data?.availablePoints || 0}
+          />
         </div>
 
         {/* Quick Actions */}
@@ -398,6 +407,12 @@ const Dashboard = () => {
               </Link>
             </div>
           )}
+        </div>
+
+        {/* Eco Impact Widget */}
+        <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Your Eco Impact</h3>
+          <EcoImpactWidget />
         </div>
       </div>
     </div>

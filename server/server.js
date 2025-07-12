@@ -16,12 +16,18 @@ const adminRoutes = require('./routes/admin');
 // Import middleware
 const errorHandler = require('./middleware/errorHandler');
 
+// Import Swagger configuration
+const { specs, serve, setup } = require('./config/swagger');
+
 const app = express();
 
 // Middleware
 app.use(express.json());
 app.use(cors());
 app.use(morgan('combined'));
+
+// API Documentation
+app.use('/api/docs', serve, setup);
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -31,7 +37,26 @@ app.use('/api/admin', adminRoutes);
 
 // Root route
 app.get('/', (req, res) => {
-  res.json({ message: 'MERN Hackathon Boilerplate API' });
+  res.json({ 
+    message: 'ReWear API - Sustainable Fashion Exchange Platform',
+    version: '1.0.0',
+    status: 'Running',
+    endpoints: {
+      docs: '/api/docs',
+      health: '/api/health'
+    }
+  });
+});
+
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    environment: process.env.NODE_ENV || 'development',
+    version: '1.0.0'
+  });
 });
 
 // Error handling middleware

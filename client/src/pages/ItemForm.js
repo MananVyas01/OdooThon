@@ -7,6 +7,8 @@ import Button from '../components/Button';
 import Input from '../components/Input';
 import Select from '../components/Select';
 import TextArea from '../components/TextArea';
+import { suggestTags } from '../utils/tagSuggestions';
+import { Sparkles } from 'lucide-react';
 
 const ItemForm = () => {
   const [item, setItem] = useState({
@@ -34,6 +36,8 @@ const ItemForm = () => {
   });
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [suggestedTags, setSuggestedTags] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -110,6 +114,20 @@ const ItemForm = () => {
       }));
     } else {
       setItem(prev => ({ ...prev, [field]: value }));
+    }
+  };
+
+  const handleSuggestTags = () => {
+    const suggestions = suggestTags(item.title, item.description, item.category);
+    setSuggestedTags(suggestions);
+    setShowSuggestions(true);
+  };
+
+  const addSuggestedTag = (tag) => {
+    const currentTags = item.tags ? item.tags.split(',').map(t => t.trim()) : [];
+    if (!currentTags.includes(tag)) {
+      const newTags = [...currentTags, tag].join(', ');
+      setItem(prev => ({ ...prev, tags: newTags }));
     }
   };
 
@@ -288,12 +306,53 @@ const ItemForm = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Tags
                 </label>
-                <Input
-                  type="text"
-                  value={item.tags}
-                  onChange={(e) => handleInputChange('tags', e.target.value)}
-                  placeholder="vintage, casual, summer (separated by commas)"
-                />
+                <div className="flex items-center gap-2">
+                  <Input
+                    type="text"
+                    value={item.tags}
+                    onChange={(e) => handleInputChange('tags', e.target.value)}
+                    placeholder="vintage, casual, summer (separated by commas)"
+                  />
+                  <Button
+                    type="button"
+                    size="sm"
+                    onClick={handleSuggestTags}
+                    disabled={loading}
+                    variant="outline"
+                    className="flex-shrink-0"
+                  >
+                    <Sparkles className="w-4 h-4 mr-1" /> Suggest Tags
+                  </Button>
+                </div>
+                
+                {/* Tag Suggestions */}
+                {showSuggestions && suggestedTags.length > 0 && (
+                  <div className="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                    <p className="text-sm font-medium text-blue-800 mb-2">
+                      ✨ Suggested Tags (click to add):
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {suggestedTags.map((tag, index) => (
+                        <button
+                          key={index}
+                          type="button"
+                          onClick={() => addSuggestedTag(tag)}
+                          className="inline-flex items-center px-2.5 py-1.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors duration-200"
+                        >
+                          {tag}
+                        </button>
+                      ))}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setShowSuggestions(false)}
+                      className="text-xs text-blue-600 hover:text-blue-800 mt-2"
+                    >
+                      Hide suggestions
+                    </button>
+                  </div>
+                )}
+                
                 <p className="text-xs text-gray-500 mt-1">
                   Add tags separated by commas to help others find your item
                 </p>

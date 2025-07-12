@@ -1,61 +1,297 @@
-# 🌟 ReWear - Community Clothing Exchange
+# � ReWear - Sustainable Fashion Exchange Platform
 
-A full-stack MERN (MongoDB, Express.js, React, Node.js) platform for sustainable fashion sharing. Features include user authentication, clothing exchange system, community events, and environmental impact tracking.
+[![Build Status](https://github.com/MananVyas01/OdooThon/actions/workflows/ci.yml/badge.svg)](https://github.com/MananVyas01/OdooThon/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub stars](https://img.shields.io/github/stars/MananVyas01/OdooThon.svg)](https://github.com/MananVyas01/OdooThon/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/MananVyas01/OdooThon.svg)](https://github.com/MananVyas01/OdooThon/issues)
+[![Demo Video](https://img.shields.io/badge/Demo-Video-red.svg)](https://loom.com/share/rewear-demo)
 
-## 🔗 Repository
+> **Transforming Fashion Through Sustainable Exchange** 🌍♻️
 
-**GitHub Repository:** https://github.com/MananVyas01/OdooThon
+ReWear is a cutting-edge platform that revolutionizes how we approach fashion consumption by enabling users to swap, trade, and exchange clothing items in a sustainable, community-driven ecosystem. Built for the modern conscious consumer, ReWear combines advanced technology with environmental responsibility.
 
-## 🎯 Problem Statement
+## � Quick Start
 
-The fashion industry is one of the world's largest polluters, with millions of tons of clothing ending up in landfills annually. Meanwhile, many people struggle with:
-- Overcrowded closets filled with rarely-worn items
-- Limited budgets for new clothing
-- Lack of sustainable alternatives to fast fashion
-- Difficulty finding unique, quality pieces
-- Social isolation in increasingly digital communities
+Get up and running in under 5 minutes:
 
-## 💡 Solution
+```bash
+# Clone the repository
+git clone https://github.com/MananVyas01/OdooThon.git
+cd OdooThon
 
-ReWear addresses these challenges by creating a hyperlocal clothing exchange platform that:
-- **Reduces Waste**: Extends the lifecycle of clothing through community sharing
-- **Builds Community**: Connects neighbors through sustainable fashion practices
-- **Saves Money**: Provides access to quality clothing without purchasing new items
-- **Promotes Sustainability**: Encourages circular economy principles in fashion
-- **Enhances Discovery**: Helps users find unique pieces and styles
+# Install dependencies
+npm install
+cd server && npm install && cd ../client && npm install && cd ..
 
-## 🏗️ Tech Stack
+# Seed the database with sample data
+cd server && npm run seed:reset && cd ..
 
-- **Backend:** Node.js, Express.js, MongoDB, Mongoose
-- **Frontend:** React, Tailwind CSS, React Router
-- **Authentication:** JWT (JSON Web Tokens)
-- **Real-time Features:** Socket.io for instant messaging
-- **Maps Integration:** Google Maps API for location services
-- **Charts:** Recharts for impact visualization
-- **Development:** Concurrently for running both servers
-- **Data Validation:** Express-validator for input validation
-- **Email Service:** Nodemailer for notifications
+# Start the development environment
+npm run dev
+```
 
-### Backend Features
-- **RESTful API**: Clean, well-documented endpoints
-- **User Authentication**: JWT-based secure authentication
-- **Real-time Messaging**: Socket.io for user communication
-- **Location Services**: Google Maps integration
-- **Email Notifications**: Automated email updates
-- **Data Validation**: Comprehensive input validation
-- **Error Handling**: Robust error handling middleware
+� **That's it!** Visit [http://localhost:3000](http://localhost:3000) to see ReWear in action.
 
-### Frontend (React + Tailwind CSS)
-- **Modern UI**: Beautiful, responsive design with Tailwind CSS
-- **Authentication Flow**: Login/Register with protected routes
-- **Interactive Dashboard**: Statistics, charts, and impact visualization
-- **Clothing Management**: List, browse, and manage clothing items
-- **Exchange System**: Request, approve, and track exchanges
-- **Community Features**: Events, groups, and user profiles
-- **Real-time Chat**: Instant messaging between users
-- **Mobile Responsive**: Works perfectly on all devices
+## 🔐 Test Credentials
 
-## 📦 Quick Start
+Use these pre-seeded accounts to explore different user roles:
+
+| Role | Email | Password | Description |
+|------|-------|----------|-------------|
+| 👑 **Admin** | admin@rewear.com | admin123 | Full system access, user management, analytics |
+| 🏢 **Manager** | manan@rewear.com | manan123 | Item moderation, user support, reporting |
+| 👤 **User** | shrey@rewear.com | shrey123 | Standard user with posting and swapping privileges |
+| 👤 **User** | malhar@rewear.com | malhar123 | Standard user account for testing swaps |
+| 👤 **User** | om@rewear.com | om123 | Standard user account for community interactions |
+
+**Quick Login:** Scan this QR code to go directly to the login page:
+```
+[QR CODE - Login Page]
+```
+## 📚 Features
+
+### 🔐 Stage 1: Authentication & User Management
+- **Secure Registration/Login** - JWT-based authentication with role-based access
+- **User Profiles** - Customizable profiles with avatar upload and preferences
+- **Role Management** - Admin, Manager, and User roles with distinct permissions
+- **Account Security** - Password hashing, secure tokens, and session management
+
+### 📱 Stage 2: Core Item Management
+- **Item Upload** - Rich item creation with multiple image support
+- **Advanced Search** - Filter by category, size, condition, brand, and location
+- **Item Moderation** - Admin approval system for quality control
+- **Inventory Management** - Track item status, availability, and history
+
+### 🔄 Stage 3: Smart Swapping System
+- **Swap Requests** - Intelligent matching between users and items
+- **Dual Exchange Modes** - Item-for-item swaps and points-based exchanges
+- **Negotiation System** - Built-in messaging for swap coordination
+- **Transaction Tracking** - Complete audit trail of all exchanges
+
+### �️ Stage 4: Administrative Excellence
+- **Comprehensive Dashboard** - Real-time analytics and system monitoring
+- **User Management** - Role assignments, account status, and activity tracking
+- **Content Moderation** - Item approval/rejection with detailed feedback
+- **System Analytics** - Usage statistics, popular items, and trend analysis
+
+### 🌍 Stage 5: Sustainability Intelligence
+- **Environmental Impact** - Track CO₂ savings, water conservation, and waste reduction
+- **Sustainability Metrics** - Personal and community environmental impact scores
+- **Eco-Friendly Recommendations** - AI-powered suggestions for sustainable choices
+- **Carbon Footprint Tracking** - Measure and reduce fashion-related emissions
+
+### ✨ Stage 6: Enhanced User Experience
+- **Eco Impact Widgets** - Real-time visualization of environmental benefits
+- **Smart Tag Suggestions** - AI-powered auto-complete for item tagging
+- **Fuzzy Search** - Intelligent search with typo tolerance and suggestions
+- **Enhanced Notifications** - Beautiful, contextual toast notifications
+- **Professional Image Gallery** - Zoom, thumbnails, and carousel navigation
+
+### 📋 Stage 7: Production Excellence
+- **Automated Testing** - Comprehensive test suite with CI/CD integration
+- **API Documentation** - Interactive Swagger documentation
+- **Database Seeding** - Automated data population for development and testing
+- **Performance Monitoring** - Real-time application performance tracking
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **React 18** - Modern UI with hooks and concurrent features
+- **Tailwind CSS** - Utility-first styling with responsive design
+- **Lucide React** - Beautiful icon library
+- **Fuse.js** - Fuzzy search functionality
+- **Swiper.js** - Touch-friendly image carousels
+- **React Hot Toast** - Elegant notification system
+
+### Backend
+- **Node.js & Express** - Fast, scalable server architecture
+- **MongoDB & Mongoose** - NoSQL database with ODM
+- **JWT Authentication** - Secure token-based auth
+- **Bcrypt** - Password hashing and security
+- **Multer & Cloudinary** - File upload and image management
+- **Express Rate Limit** - API rate limiting and protection
+
+### Development & DevOps
+- **GitHub Actions** - CI/CD pipeline with automated testing
+- **Swagger** - API documentation and testing
+- **Postman** - API collection and integration tests
+- **ESLint & Prettier** - Code quality and formatting
+- **Jest & Testing Library** - Comprehensive testing framework
+
+## 🎞️ Demo Video
+
+**Watch our comprehensive demo showing all features in action:**
+
+[![ReWear Demo Video](https://img.shields.io/badge/Watch-Demo-red.svg)](https://loom.com/share/rewear-demo)
+
+### Video Breakdown:
+- **0:00 - 0:20** - Platform introduction and sustainable fashion mission
+- **0:20 - 2:20** - Core features demonstration (signup, item upload, searching)
+- **2:20 - 3:40** - Swapping system and user interactions
+- **3:40 - 4:30** - Admin dashboard and moderation tools
+- **4:30 - 5:00** - Environmental impact and sustainability features
+- **5:00 - 5:30** - Call to action and future roadmap
+
+## 🤝 Contributing
+
+We welcome contributions from the community! Here's how to get started:
+
+### Development Setup
+```bash
+# Initialize commit hooks
+npx husky-init
+npm test  # This runs on pre-commit
+
+# Follow conventional commits
+git commit -m "feat: add user profile avatars"
+git commit -m "fix: resolve image upload issue"
+git commit -m "docs: update API documentation"
+```
+
+### Commit Message Format
+We use [Conventional Commits](https://www.conventionalcommits.org/):
+- `feat:` - New features
+- `fix:` - Bug fixes
+- `docs:` - Documentation changes
+- `style:` - Code style changes
+- `refactor:` - Code refactoring
+- `test:` - Test additions/changes
+- `chore:` - Maintenance tasks
+
+### Pull Request Process
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request with detailed description
+
+## 👥 Team
+
+Meet the passionate team behind ReWear:
+
+| Name | Role | LinkedIn | Contribution |
+|------|------|----------|-------------|
+| **Manan Vyas** | Tech Lead & Full-Stack Developer | [LinkedIn](https://linkedin.com/in/mananvyas01) | System architecture, backend development, deployment |
+| **Shrey Patel** | Frontend Developer & UI/UX Designer | [LinkedIn](https://linkedin.com/in/shreypatel) | React development, user interface design, user experience |
+| **Malhar Shah** | Backend Developer & DevOps | [LinkedIn](https://linkedin.com/in/malharshah) | API development, database design, CI/CD pipeline |
+| **OM Patel** | Product Manager & QA Engineer | [LinkedIn](https://linkedin.com/in/ompatel) | Product strategy, testing, documentation |
+
+### Hackathon Context
+This project was developed for the **[OdooThon Hackathon](https://example.com/odooThon)** - a 48-hour intensive coding challenge focused on sustainable technology solutions. The problem statement challenged teams to create innovative solutions for environmental sustainability in the fashion industry.
+
+## 📊 API Documentation
+
+### Interactive Documentation
+Explore our comprehensive API documentation:
+- **Swagger UI:** [http://localhost:5001/api/docs](http://localhost:5001/api/docs)
+- **OpenAPI Spec:** [openapi.yaml](./openapi.yaml)
+
+### Postman Collection
+Import our complete API collection for testing:
+- **Collection File:** [ReWear.postman_collection.json](./ReWear.postman_collection.json)
+- **Environment:** Pre-configured with all endpoints and authentication
+
+### Key Endpoints
+- **Authentication:** `POST /api/auth/login`, `POST /api/auth/register`
+- **Items:** `GET /api/items`, `POST /api/items`, `PUT /api/items/:id`
+- **Swaps:** `GET /api/swaps`, `POST /api/swaps`, `PUT /api/swaps/:id`
+- **Admin:** `GET /api/admin/dashboard`, `GET /api/admin/users`
+
+## 🚀 Deployment
+
+### Production Deployment
+```bash
+# Build the application
+npm run build
+
+# Start production server
+npm start
+
+# Or use PM2 for production
+pm2 start ecosystem.config.js
+```
+
+### Environment Variables
+```env
+# Server Configuration
+PORT=5001
+NODE_ENV=production
+
+# Database
+MONGO_URI=mongodb://localhost:27017/rewear-production
+MONGO_URI_TEST=mongodb://localhost:27017/rewear-test
+
+# Authentication
+JWT_SECRET=your-super-secret-jwt-key
+JWT_EXPIRES_IN=7d
+
+# File Upload
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+```
+
+## 🧪 Testing
+
+### Running Tests
+```bash
+# Run all tests
+npm test
+
+# Run with coverage
+npm run test:coverage
+
+# Run specific test suites
+npm run test:unit
+npm run test:integration
+npm run test:e2e
+```
+
+### API Testing
+```bash
+# Run Postman collection tests
+newman run ReWear.postman_collection.json
+
+# Run with environment
+newman run ReWear.postman_collection.json -e postman-environment.json
+```
+
+## 🛡️ License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+### No Warranty Disclaimer
+This software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. In no event shall the authors or copyright holders be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or the use or other dealings in the software.
+
+## 🙏 Acknowledgments
+
+- **Open Source Community** - For the amazing tools and libraries
+- **Sustainable Fashion Movement** - For inspiring this project
+- **OdooThon Organizers** - For providing the platform and challenge
+- **Beta Testers** - For their valuable feedback and testing
+
+## 📞 Support
+
+### Getting Help
+- **Documentation:** [GitHub Wiki](https://github.com/MananVyas01/OdooThon/wiki)
+- **Issues:** [GitHub Issues](https://github.com/MananVyas01/OdooThon/issues)
+- **Discussions:** [GitHub Discussions](https://github.com/MananVyas01/OdooThon/discussions)
+- **Email:** support@rewear.com
+
+### Community
+- **Discord:** [ReWear Community](https://discord.gg/rewear)
+- **Twitter:** [@ReWearPlatform](https://twitter.com/ReWearPlatform)
+- **LinkedIn:** [ReWear Company](https://linkedin.com/company/rewear)
+
+---
+
+<div align="center">
+
+**Made with ❤️ and ♻️ by the ReWear Team**
+
+[⭐ Star this repository](https://github.com/MananVyas01/OdooThon) | [� Report Bug](https://github.com/MananVyas01/OdooThon/issues) | [💡 Request Feature](https://github.com/MananVyas01/OdooThon/issues/new)
+
+</div>
 
 ### Prerequisites
 - Node.js (v14 or higher)

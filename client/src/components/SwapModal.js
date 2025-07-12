@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { swapAPI } from '../utils/api';
-import { useToast } from './Toast';
 import { useAuth } from '../context/AuthContext';
 import Modal from './Modal';
 import Button from './Button';
 import TextArea from './TextArea';
 import Select from './Select';
+import { showToast } from '../utils/toast';
 
 const SwapModal = ({ isOpen, onClose, item, userItems = [] }) => {
   const [swapData, setSwapData] = useState({
@@ -16,7 +16,6 @@ const SwapModal = ({ isOpen, onClose, item, userItems = [] }) => {
   });
   const [submitting, setSubmitting] = useState(false);
   const { user } = useAuth();
-  const toast = useToast();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,7 +33,20 @@ const SwapModal = ({ isOpen, onClose, item, userItems = [] }) => {
       };
 
       await swapAPI.createSwapRequest(requestData);
-      toast.success('Swap request sent successfully!');
+      
+      // Show enhanced success toast based on swap mode
+      if (swapData.mode === 'points') {
+        showToast.success(`🔄 Swap request sent! Offering ${swapData.pointsOffered} points`, {
+          duration: 5000,
+          icon: '💎',
+        });
+      } else {
+        showToast.success('🔄 Item swap request sent successfully!', {
+          duration: 5000,
+          icon: '👗',
+        });
+      }
+      
       onClose();
       
       // Reset form
@@ -46,7 +58,13 @@ const SwapModal = ({ isOpen, onClose, item, userItems = [] }) => {
       });
     } catch (error) {
       console.error('Error creating swap request:', error);
-      toast.error(error.response?.data?.message || 'Failed to send swap request');
+      
+      // Enhanced error handling
+      if (error.response?.data?.message?.includes('insufficient')) {
+        showToast.insufficientPoints(error.response.data.message);
+      } else {
+        showToast.error(error.response?.data?.message || 'Failed to send swap request');
+      }
     } finally {
       setSubmitting(false);
     }

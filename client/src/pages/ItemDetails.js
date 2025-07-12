@@ -7,6 +7,8 @@ import Loading from '../components/Loading';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
 import SwapModal from '../components/SwapModal';
+import ImageGallery from '../components/ImageGallery';
+import { showToast } from '../utils/toast';
 
 const ItemDetails = () => {
   const [item, setItem] = useState(null);
@@ -53,11 +55,26 @@ const ItemDetails = () => {
 
   const handleLikeToggle = async () => {
     try {
-      await itemAPI.toggleLike(id);
+      const response = await itemAPI.toggleLike(id);
+      const isLiked = response.data.liked;
+      
+      if (isLiked) {
+        showToast.success('❤️ Added to favorites!', {
+          duration: 2000,
+          style: {
+            background: 'linear-gradient(135deg, #ec4899 0%, #be185d 100%)',
+          },
+        });
+      } else {
+        showToast.info('💔 Removed from favorites', {
+          duration: 2000,
+        });
+      }
+      
       fetchItem(); // Refresh to update like status
     } catch (error) {
       console.error('Error toggling like:', error);
-      toast.error('Failed to update like');
+      showToast.error('Failed to update like');
     }
   };
 
@@ -65,11 +82,11 @@ const ItemDetails = () => {
     try {
       setDeleting(true);
       await itemAPI.deleteItem(id);
-      toast.success('Item deleted successfully');
+      showToast.success('🗑️ Item deleted successfully');
       navigate('/items');
     } catch (error) {
       console.error('Error deleting item:', error);
-      toast.error('Failed to delete item');
+      showToast.error('Failed to delete item');
     } finally {
       setDeleting(false);
       setDeleteModal(false);
@@ -141,21 +158,10 @@ const ItemDetails = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Images */}
           <div className="space-y-4">
-            <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
-              {item.images && item.images.length > 0 ? (
-                <img
-                  src={item.images[0].url}
-                  alt={item.images[0].alt || item.title}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-gray-400">
-                  <span className="text-6xl">👗</span>
-                </div>
-              )}
-            </div>
-            
-            {/* Additional images would go here */}
+            <ImageGallery 
+              images={item.images} 
+              itemTitle={item.title}
+            />
           </div>
 
           {/* Item Details */}

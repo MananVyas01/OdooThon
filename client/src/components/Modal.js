@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import Button from './Button';
 
 const Modal = ({ isOpen, onClose, title, children, showCloseButton = true, className = '' }) => {
   useEffect(() => {
