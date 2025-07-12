@@ -33,6 +33,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  points: {
+    type: Number,
+    default: 0,
+    min: [0, 'Points cannot be negative']
+  },
   isActive: {
     type: Boolean,
     default: true

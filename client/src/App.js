@@ -7,9 +7,9 @@ import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
-import RequestList from './pages/RequestList';
-import RequestForm from './pages/RequestForm';
-import RequestDetails from './pages/RequestDetails';
+import ItemList from './pages/ItemList';
+import ItemForm from './pages/ItemForm';
+import ItemDetails from './pages/ItemDetails';
 import './index.css';
 
 function App() {
@@ -39,41 +39,47 @@ function App() {
                 </ProtectedRoute>
               } />
               
-              <Route path="/requests" element={
+              <Route path="/items" element={
                 <ProtectedRoute>
                   <div>
                     <Navbar />
-                    <RequestList />
+                    <ItemList />
                   </div>
                 </ProtectedRoute>
               } />
               
-              <Route path="/requests/new" element={
+              <Route path="/items/new" element={
                 <ProtectedRoute>
                   <div>
                     <Navbar />
-                    <RequestForm />
+                    <ItemForm />
                   </div>
                 </ProtectedRoute>
               } />
               
-              <Route path="/requests/:id" element={
+              <Route path="/items/:id" element={
                 <ProtectedRoute>
                   <div>
                     <Navbar />
-                    <RequestDetails />
+                    <ItemDetails />
                   </div>
                 </ProtectedRoute>
               } />
               
-              <Route path="/requests/:id/edit" element={
+              <Route path="/items/:id/edit" element={
                 <ProtectedRoute>
                   <div>
                     <Navbar />
-                    <RequestForm />
+                    <ItemForm />
                   </div>
                 </ProtectedRoute>
               } />
+              
+              {/* Legacy redirects */}
+              <Route path="/requests" element={<Navigate to="/items" replace />} />
+              <Route path="/requests/new" element={<Navigate to="/items/new" replace />} />
+              <Route path="/requests/:id" element={<Navigate to="/items/:id" replace />} />
+              <Route path="/requests/:id/edit" element={<Navigate to="/items/:id/edit" replace />} />
               
               {/* Catch all route */}
               <Route path="*" element={

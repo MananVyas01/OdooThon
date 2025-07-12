@@ -17,8 +17,8 @@ const Navbar = () => {
 
   const navItems = [
     { path: '/dashboard', label: 'Dashboard', icon: '📊' },
-    { path: '/requests', label: 'Requests', icon: '📋' },
-    { path: '/requests/new', label: 'New Request', icon: '➕' },
+    { path: '/items', label: 'Browse Items', icon: '�' },
+    { path: '/items/new', label: 'List Item', icon: '➕' },
   ];
 
   return (
@@ -28,9 +28,9 @@ const Navbar = () => {
           <div className="flex items-center">
             <Link to="/dashboard" className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">H</span>
+                <span className="text-white font-bold text-lg">S</span>
               </div>
-              <span className="text-xl font-bold text-gray-900">Hackathon</span>
+              <span className="text-xl font-bold text-gray-900">StyleSwap</span>
             </Link>
           </div>
 

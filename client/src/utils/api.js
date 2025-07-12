@@ -45,7 +45,20 @@ export const authAPI = {
   updateProfile: (userData) => api.put('/auth/profile', userData),
 };
 
-// Request API
+// Item API (for garment/clothing swap)
+export const itemAPI = {
+  getItems: (params) => api.get('/items', { params }),
+  getItem: (id) => api.get(`/items/${id}`),
+  createItem: (itemData) => api.post('/items', itemData),
+  updateItem: (id, itemData) => api.put(`/items/${id}`, itemData),
+  deleteItem: (id) => api.delete(`/items/${id}`),
+  updateItemStatus: (id, status) => api.patch(`/items/${id}/status`, status),
+  toggleLike: (id) => api.post(`/items/${id}/like`),
+  getMyItems: (params) => api.get('/items/my-items', { params }),
+  getDashboardStats: () => api.get('/items/dashboard/stats'),
+};
+
+// Request API (legacy - keeping for backward compatibility)
 export const requestAPI = {
   getRequests: (params) => api.get('/requests', { params }),
   getRequest: (id) => api.get(`/requests/${id}`),
