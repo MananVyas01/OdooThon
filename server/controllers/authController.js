@@ -59,32 +59,44 @@ const register = async (req, res) => {
 // @access  Public
 const login = async (req, res) => {
   try {
+    console.log('Login attempt:', req.body);
+    
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log('Validation errors:', errors.array());
       return res.status(400).json({ errors: errors.array() });
     }
 
     const { email, password } = req.body;
+    console.log('Login data:', { email, password: '***' });
 
     // Check if user exists
     const user = await User.findOne({ email }).select('+password');
     if (!user) {
+      console.log('User not found for email:', email);
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
+    console.log('User found:', user.email);
+
     // Check if user is active
     if (!user.isActive) {
+      console.log('User is not active:', user.email);
       return res.status(400).json({ message: 'Account is deactivated' });
     }
 
     // Check password
     const isMatch = await user.comparePassword(password);
+    console.log('Password match:', isMatch);
+    
     if (!isMatch) {
+      console.log('Password does not match for user:', user.email);
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
     // Generate token
     const token = generateToken(user._id);
+    console.log('Token generated for user:', user.email);
 
     res.json({
       success: true,

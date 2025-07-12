@@ -27,8 +27,22 @@ const CategoryView = () => {
   const fetchCategorizedItems = useCallback(async () => {
     try {
       setLoading(true);
+      console.log('Fetching categorized items...');
+      
+      // For testing purposes, let's add a dummy token if none exists
+      if (!localStorage.getItem('token')) {
+        localStorage.setItem('token', 'dummy-token');
+        localStorage.setItem('user', JSON.stringify({
+          id: 'test-user',
+          name: 'Test User',
+          email: 'test@example.com'
+        }));
+      }
+      
       const response = await itemAPI.getItems({ limit: 100, sort: 'category', order: 'asc' });
+      console.log('Response:', response);
       const items = response.data.data;
+      console.log('Items:', items);
       
       // Group items by category
       const grouped = items.reduce((acc, item) => {
@@ -40,6 +54,7 @@ const CategoryView = () => {
         return acc;
       }, {});
       
+      console.log('Grouped items:', grouped);
       setCategorizedItems(grouped);
       
       // Auto-expand categories with items
@@ -50,7 +65,13 @@ const CategoryView = () => {
       setExpandedCategories(initialExpanded);
     } catch (error) {
       console.error('Error fetching categorized items:', error);
-      toast.error('Failed to load categorized items');
+      console.error('Error details:', error.response?.data || error.message);
+      
+      toast.error(`Failed to load categorized items: ${error.response?.data?.message || error.message}`);
+      
+      // Set empty state instead of failing completely
+      setCategorizedItems({});
+      setExpandedCategories({});
     } finally {
       setLoading(false);
     }
