@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import { itemAPI } from '../utils/api';
+import { itemAPI, swapAPI } from '../utils/api';
 import { useToast } from '../components/Toast';
 import Loading from '../components/Loading';
 import Button from '../components/Button';
@@ -10,6 +10,7 @@ const Dashboard = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [recentItems, setRecentItems] = useState([]);
+  const [swapStats, setSwapStats] = useState(null);
   const toast = useToast();
 
   useEffect(() => {
@@ -19,13 +20,15 @@ const Dashboard = () => {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      const [statsResponse, itemsResponse] = await Promise.all([
+      const [statsResponse, itemsResponse, swapStatsResponse] = await Promise.all([
         itemAPI.getDashboardStats(),
-        itemAPI.getMyItems({ limit: 5, sort: 'createdAt', order: 'desc' })
+        itemAPI.getMyItems({ limit: 5, sort: 'createdAt', order: 'desc' }),
+        swapAPI.getSwapStats()
       ]);
 
       setStats(statsResponse.data);
       setRecentItems(itemsResponse.data.data);
+      setSwapStats(swapStatsResponse.data);
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
       toast.error('Failed to load dashboard data');
@@ -87,7 +90,7 @@ const Dashboard = () => {
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <span className="text-blue-600 font-semibold">�</span>
+                  <span className="text-blue-600 font-semibold">👗</span>
                 </div>
               </div>
               <div className="ml-4">
@@ -137,6 +140,87 @@ const Dashboard = () => {
                 <p className="text-2xl font-semibold text-gray-900">{stats?.data?.totalLikes || 0}</p>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Swap Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg shadow-sm p-6 text-white">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <div className="w-8 h-8 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-semibold">💎</span>
+                </div>
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-white opacity-90">Available Points</p>
+                <p className="text-2xl font-semibold text-white">{swapStats?.data?.availablePoints || 0}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg shadow-sm p-6 text-white">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <div className="w-8 h-8 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-semibold">🔄</span>
+                </div>
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-white opacity-90">Active Swaps</p>
+                <p className="text-2xl font-semibold text-white">{swapStats?.data?.activeSwaps || 0}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-r from-green-500 to-teal-500 rounded-lg shadow-sm p-6 text-white">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <div className="w-8 h-8 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-semibold">✅</span>
+                </div>
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-white opacity-90">Completed Swaps</p>
+                <p className="text-2xl font-semibold text-white">{swapStats?.data?.completedSwaps || 0}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-r from-orange-500 to-red-500 rounded-lg shadow-sm p-6 text-white">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <div className="w-8 h-8 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-semibold">⏰</span>
+                </div>
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-white opacity-90">Pending Requests</p>
+                <p className="text-2xl font-semibold text-white">{swapStats?.data?.pendingRequests || 0}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Link to="/items/new">
+              <Button className="w-full">
+                📝 List New Item
+              </Button>
+            </Link>
+            <Link to="/items">
+              <Button variant="outline" className="w-full">
+                🔍 Browse Items
+              </Button>
+            </Link>
+            <Link to="/swaps">
+              <Button variant="outline" className="w-full">
+                🔄 View My Swaps
+              </Button>
+            </Link>
           </div>
         </div>
 

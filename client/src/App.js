@@ -10,6 +10,7 @@ import Dashboard from './pages/Dashboard';
 import ItemList from './pages/ItemList';
 import ItemForm from './pages/ItemForm';
 import ItemDetails from './pages/ItemDetails';
+import MySwaps from './pages/MySwaps';
 import './index.css';
 
 function App() {
@@ -71,6 +72,15 @@ function App() {
                   <div>
                     <Navbar />
                     <ItemForm />
+                  </div>
+                </ProtectedRoute>
+              } />
+              
+              <Route path="/swaps" element={
+                <ProtectedRoute>
+                  <div>
+                    <Navbar />
+                    <MySwaps />
                   </div>
                 </ProtectedRoute>
               } />

@@ -6,11 +6,14 @@ import { useToast } from '../components/Toast';
 import Loading from '../components/Loading';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
+import SwapModal from '../components/SwapModal';
 
 const ItemDetails = () => {
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [swapModal, setSwapModal] = useState(false);
+  const [userItems, setUserItems] = useState([]);
   const [deleting, setDeleting] = useState(false);
 
   const { id } = useParams();
@@ -20,7 +23,10 @@ const ItemDetails = () => {
 
   useEffect(() => {
     fetchItem();
-  }, [id]);
+    if (user) {
+      fetchUserItems();
+    }
+  }, [id, user]);
 
   const fetchItem = async () => {
     try {
@@ -33,6 +39,15 @@ const ItemDetails = () => {
       navigate('/items');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchUserItems = async () => {
+    try {
+      const response = await itemAPI.getMyItems({ limit: 50 });
+      setUserItems(response.data.data);
+    } catch (error) {
+      console.error('Error fetching user items:', error);
     }
   };
 
@@ -282,11 +297,37 @@ const ItemDetails = () => {
             </div>
 
             {/* Contact/Swap Button */}
-            {!isOwner && (
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <Button className="w-full">
-                  Contact for Swap
-                </Button>
+            {!isOwner && item.availability === 'available' && (
+              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <Button
+                    className="w-full flex items-center justify-center space-x-2"
+                    onClick={() => setSwapModal(true)}
+                  >
+                    <span>🔄</span>
+                    <span>Request Swap</span>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="w-full flex items-center justify-center space-x-2"
+                    onClick={() => setSwapModal(true)}
+                  >
+                    <span>💎</span>
+                    <span>Redeem with Points</span>
+                  </Button>
+                </div>
+                <p className="text-sm text-gray-500 text-center">
+                  Your points: {user?.points || 0} | Suggested: {item.points || 10} points
+                </p>
+              </div>
+            )}
+
+            {/* Item Not Available */}
+            {!isOwner && item.availability !== 'available' && (
+              <div className="bg-gray-50 rounded-lg shadow-sm border border-gray-200 p-6 text-center">
+                <p className="text-gray-600">
+                  This item is currently {item.availability === 'swapped' ? 'swapped' : 'not available'}
+                </p>
               </div>
             )}
           </div>
@@ -319,6 +360,14 @@ const ItemDetails = () => {
             </div>
           </div>
         </Modal>
+
+        {/* Swap Modal */}
+        <SwapModal
+          isOpen={swapModal}
+          onClose={() => setSwapModal(false)}
+          item={item}
+          userItems={userItems}
+        />
       </div>
     </div>
   );

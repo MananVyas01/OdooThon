@@ -10,6 +10,7 @@ dotenv.config();
 // Import routes
 const authRoutes = require('./routes/auth');
 const itemRoutes = require('./routes/items');
+const swapRoutes = require('./routes/swaps');
 
 // Import middleware
 const errorHandler = require('./middleware/errorHandler');
@@ -24,6 +25,7 @@ app.use(morgan('combined'));
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/items', itemRoutes);
+app.use('/api/swaps', swapRoutes);
 
 // Root route
 app.get('/', (req, res) => {

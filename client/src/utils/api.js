@@ -58,6 +58,18 @@ export const itemAPI = {
   getDashboardStats: () => api.get('/items/dashboard/stats'),
 };
 
+// Swap API (for managing swap requests and points)
+export const swapAPI = {
+  createSwapRequest: (swapData) => api.post('/swaps', swapData),
+  getUserSwapRequests: (params) => api.get('/swaps/user', { params }),
+  getSwapRequest: (id) => api.get(`/swaps/${id}`),
+  acceptSwapRequest: (id, responseData) => api.patch(`/swaps/${id}/accept`, responseData),
+  declineSwapRequest: (id, responseData) => api.patch(`/swaps/${id}/decline`, responseData),
+  completeSwapRequest: (id, completionData) => api.patch(`/swaps/${id}/complete`, completionData),
+  cancelSwapRequest: (id) => api.patch(`/swaps/${id}/cancel`),
+  getSwapStats: () => api.get('/swaps/stats'),
+};
+
 // Request API (legacy - keeping for backward compatibility)
 export const requestAPI = {
   getRequests: (params) => api.get('/requests', { params }),
